@@ -169,14 +169,20 @@ button:focus-visible {
   width: 100%;
   height: 100%;
   object-fit: cover;
-
   display: block;
 }
 .hero-media.no-image {
   background: radial-gradient(circle at 70% 40%, #3a2631 0%, #131316 70%);
 }
 
-/* Botones */
+/* BOTONES DEL HERO */
+.hero-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
 .btn-pink,
 .btn-dark {
   display: inline-flex;
@@ -200,6 +206,14 @@ button:focus-visible {
 }
 .btn-pink:hover {
   background: var(--accent-hover);
+}
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--accent-pink);
+  color: var(--accent-pink);
+}
+.btn-outline:hover {
+  background: rgba(232, 162, 182, 0.1);
 }
 .btn-dark {
   background: #18181b;
@@ -331,14 +345,16 @@ button:focus-visible {
   color: var(--plum);
 }
 
-/* Galería */
+/* Galería Masonry */
 .gallery-grid {
-  column-count: 3; /* 3 columnas en escritorio */
-  column-gap: 12px;
+  column-count: 3;
+  column-gap: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 .gallery-item {
   position: relative;
-  display: inline-block; /* Importante para el efecto columna */
+  display: inline-block;
   width: 100%;
   padding: 0;
   border: 0;
@@ -346,12 +362,12 @@ button:focus-visible {
   border-radius: 10px;
   overflow: hidden;
   cursor: zoom-in;
-  margin-bottom: 12px; /* Espaciado inferior */
-  break-inside: avoid; /* Evita que una foto se parta entre columnas */
+  margin-bottom: 16px;
+  break-inside: avoid;
 }
 .gallery-item img {
   width: 100%;
-  height: auto; /* La imagen mantiene su proporción natural */
+  height: auto;
   display: block;
   transition: transform 0.4s;
 }
@@ -379,13 +395,12 @@ button:focus-visible {
 
 /* Promociones */
 .promos {
-  padding-top: clamp(48px, 7vw, 84px);
+  padding-top: 0;
 }
 .promo-list {
   display: grid;
   gap: 18px;
 }
-
 .promo {
   position: relative;
   display: grid;
@@ -395,22 +410,17 @@ button:focus-visible {
   overflow: hidden;
   border-radius: 14px;
   background: linear-gradient(120deg, #5b3345, #7d4a5e);
-
-  /* 👇 NUEVOS EFECTOS DE ANIMACIÓN 👇 */
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
-
 .promo:hover {
   transform: translateY(-4px) scale(1.01);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
-
 .promo:not(.has-image) {
   grid-template-columns: 1fr;
 }
-
 .promo-img {
   width: 100%;
   height: 100%;
@@ -418,15 +428,11 @@ button:focus-visible {
   display: block;
   mask-image: linear-gradient(90deg, #000 60%, transparent);
   -webkit-mask-image: linear-gradient(90deg, #000 60%, transparent);
-
-  /* 👇 ZOOM SUAVE A LA IMAGEN 👇 */
   transition: transform 0.4s ease;
 }
-
 .promo:hover .promo-img {
   transform: scale(1.05);
 }
-
 .promo-body {
   padding: 30px 36px;
   display: flex;
@@ -526,13 +532,10 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
-  /* 👇 NUEVOS EFECTOS DE ANIMACIÓN 👇 */
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
-
 .review:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 25px rgba(60, 30, 40, 0.08);
@@ -671,6 +674,9 @@ button:focus-visible {
   .hero-media::after {
     background: linear-gradient(180deg, rgba(19, 19, 22, 0.78), rgba(19, 19, 22, 0.9));
   }
+  .gallery-grid {
+    column-count: 2;
+  }
 }
 @media (max-width: 760px) {
   .menu-btn {
@@ -722,29 +728,30 @@ button:focus-visible {
     margin-left: 0;
   }
 }
+@media (max-width: 600px) {
+  .gallery-grid {
+    column-count: 1;
+    max-width: 400px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .service-card,
   .service-thumb img,
   .gallery-item img,
   .service-arrow,
-  .spinner {
+  .spinner,
+  .promo,
+  .promo-img,
+  .review {
     transition: none;
     animation: none;
   }
   .service-card:hover,
   .service-card:hover .service-thumb img,
-  .gallery-item:hover img {
+  .gallery-item:hover img,
+  .promo:hover,
+  .promo:hover .promo-img,
+  .review:hover {
     transform: none;
-  }
-}
-
-@media (max-width: 900px) {
-  .gallery-grid {
-    column-count: 2;
-  }
-}
-@media (max-width: 600px) {
-  .gallery-grid {
-    column-count: 1;
   }
 }

@@ -20,12 +20,12 @@ const GALLERY_PAGE = 8;
   selector: 'app-landing',
   standalone: true,
   imports: [
-    RouterLink, 
-    IconComponent, 
-    RevealDirective, 
-    ServiceModal, 
-    Lightbox, 
-    WhatsappFab, 
+    RouterLink,
+    IconComponent,
+    RevealDirective,
+    ServiceModal,
+    Lightbox,
+    WhatsappFab,
     ImageUrlPipe,
     AppointmentModal // 👈 NUEVO
   ],

@@ -1,0 +1,54 @@
+<div class="page-head">
+  <div>
+    <h1>Citas Agendadas</h1>
+    <p>Gestiona las reservas de tus clientes. Confirma, completa o cancela las citas.</p>
+  </div>
+</div>
+
+<div class="panel">
+  @if (loading()) {
+    <p class="empty-state">Cargando citas…</p>
+  } @else if (appointments().length === 0) {
+    <div class="empty-state">
+      <strong>No hay citas agendadas</strong>
+      Las reservas que hagan tus clientes desde la web aparecerán aquí.
+    </div>
+  } @else {
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Fecha y Hora</th><th>Cliente</th><th>Servicio</th><th>Estado</th><th class="actions">Acciones</th></tr>
+        </thead>
+        <tbody>
+          @for (appt of appointments(); track appt.id) {
+            <tr>
+              <td>
+                <strong>{{ formatDate(appt.appointment_date) }}</strong><br>
+                <span class="sub">{{ appt.appointment_time.substring(0, 5) }}</span>
+              </td>
+              <td>
+                <strong>{{ appt.client_name }}</strong><br>
+                <span class="sub">{{ appt.client_phone }}</span>
+              </td>
+              <td>{{ appt.service_name || 'No especificado' }}</td>
+              <td>
+                <span class="badge" [ngClass]="appt.status">
+                  {{ getStatusLabel(appt.status) }}
+                </span>
+              </td>
+              <td class="actions">
+                @if (appt.status === 'pending') {
+                  <button type="button" class="btn btn-sm btn-solid" [disabled]="busyId() === appt.id" (click)="updateStatus(appt, 'confirmed')">Confirmar</button>
+                }
+                @if (appt.status === 'confirmed') {
+                  <button type="button" class="btn btn-sm btn-outline" [disabled]="busyId() === appt.id" (click)="updateStatus(appt, 'completed')">Completar</button>
+                }
+                <button type="button" class="icon-btn danger" (click)="remove(appt)" aria-label="Eliminar cita"><app-icon name="trash" /></button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -3,8 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL } from './config';
 import {
-  Appointment,
-  GalleryImage, LoginResponse, Promotion, Service, ServicePayload, SiteSettings, Stats, Testimonial
+  Appointment, GalleryImage, LoginResponse, Promotion, Service, ServicePayload, SiteSettings, Stats, Testimonial
 } from './models';
 
 @Injectable({ providedIn: 'root' })
@@ -76,15 +75,14 @@ export class ApiService {
     return this.http.post<{ message: string; settings: SiteSettings }>(`${API_URL}/settings/hero-image`, form);
   }
 
-  // ---------- Citas (Público) ----------
+  // ---------- Citas ----------
   createAppointment(body: {
-    client_name: string; client_phone: string; client_email?: string;
+    client_name: string; client_phone: string; client_email?: string; 
     service_id?: string; appointment_date: string; appointment_time: string; notes?: string;
   }): Observable<{ message: string; appointment: Appointment }> {
     return this.http.post<{ message: string; appointment: Appointment }>(`${API_URL}/appointments`, body);
   }
 
-  // ---------- Citas (Admin) ----------
   getAdminAppointments(): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(`${API_URL}/appointments`);
   }

@@ -6,13 +6,8 @@ import { DashboardHome } from './features/admin/dashboard-home/dashboard-home';
 import { authGuard } from './core/auth.guard';
 
 export const routes: Routes = [
-  // Sitio público
   { path: '', component: Landing, pathMatch: 'full' },
-
-  // Acceso del administrador (no hay registro ni login para clientes)
   { path: 'gestion', component: Login },
-
-  // Panel privado
   {
     path: 'admin',
     component: Layout,
@@ -22,10 +17,10 @@ export const routes: Routes = [
       { path: 'servicios', loadComponent: () => import('./features/admin/services-admin/services-admin').then((m) => m.ServicesAdmin) },
       { path: 'galeria', loadComponent: () => import('./features/admin/gallery-admin/gallery-admin').then((m) => m.GalleryAdmin) },
       { path: 'promociones', loadComponent: () => import('./features/admin/promotions-admin/promotions-admin').then((m) => m.PromotionsAdmin) },
+      { path: 'citas', loadComponent: () => import('./features/admin/appointments-admin/appointments-admin').then((m) => m.AppointmentsAdmin) }, // 👈 NUEVA RUTA
       { path: 'testimonios', loadComponent: () => import('./features/admin/testimonials-admin/testimonials-admin').then((m) => m.TestimonialsAdmin) },
       { path: 'configuracion', loadComponent: () => import('./features/admin/settings-admin/settings-admin').then((m) => m.SettingsAdmin) }
     ]
   },
-
   { path: '**', redirectTo: '' }
 ];

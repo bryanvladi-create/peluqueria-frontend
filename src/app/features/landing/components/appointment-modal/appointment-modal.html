@@ -1,0 +1,81 @@
+<div class="backdrop" (click)="closed.emit()">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="appointment-title" (click)="$event.stopPropagation()">
+    <button type="button" class="close" aria-label="Cerrar" (click)="closed.emit()"><app-icon name="x" /></button>
+
+    @if (success()) {
+      <div class="success-state">
+        <div class="check-circle"><app-icon name="check" /></div>
+        <h2>¡Cita Agendada!</h2>
+        <p>Tu solicitud ha sido enviada. Nos pondremos en contacto contigo pronto para confirmar.</p>
+      </div>
+    } @else {
+      <div class="header">
+        <h2 id="appointment-title">Agendar Cita</h2>
+        <p>Elige el servicio y el horario que prefieras.</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field-row">
+          <div class="field">
+            <label for="name">Nombre completo *</label>
+            <input id="name" type="text" formControlName="client_name" placeholder="Ej. Ana Pérez" />
+            @if (form.controls.client_name.touched && form.controls.client_name.invalid) {
+              <span class="invalid-msg">El nombre es obligatorio.</span>
+            }
+          </div>
+          <div class="field">
+            <label for="phone">Teléfono / WhatsApp *</label>
+            <input id="phone" type="tel" formControlName="client_phone" placeholder="+593 99 123 4567" />
+            @if (form.controls.client_phone.touched && form.controls.client_phone.invalid) {
+              <span class="invalid-msg">Teléfono inválido.</span>
+            }
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Correo electrónico (Opcional)</label>
+          <input id="email" type="email" formControlName="client_email" placeholder="ana@ejemplo.com" />
+        </div>
+
+        <div class="field">
+          <label for="service">Servicio de interés</label>
+          <select id="service" formControlName="service_id">
+            <option value="">-- Selecciona un servicio --</option>
+            @for (svc of services(); track svc.id) {
+              <option [value]="svc.id">{{ svc.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="date">Fecha *</label>
+            <input id="date" type="date" formControlName="appointment_date" [min]="today" />
+            @if (form.controls.appointment_date.touched && form.controls.appointment_date.invalid) {
+              <span class="invalid-msg">Selecciona una fecha.</span>
+            }
+          </div>
+          <div class="field">
+            <label for="time">Hora *</label>
+            <input id="time" type="time" formControlName="appointment_time" min="09:00" max="19:00" />
+            @if (form.controls.appointment_time.touched && form.controls.appointment_time.invalid) {
+              <span class="invalid-msg">Selecciona una hora.</span>
+            }
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="notes">Notas adicionales (Opcional)</label>
+          <textarea id="notes" formControlName="notes" rows="2" placeholder="Ej. Quiero un cambio de look radical"></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-line" (click)="closed.emit()">Cancelar</button>
+          <button type="submit" class="btn btn-solid" [disabled]="saving()">
+            {{ saving() ? 'Enviando...' : 'Confirmar Cita' }}
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

@@ -90,3 +90,17 @@ export interface LoginResponse {
   token: string;
   admin: { id: string; username: string; email: string };
 }
+
+export interface Appointment {
+  id: string;
+  client_name: string;
+  client_phone: string;
+  client_email: string | null;
+  service_id: string | null;
+  service_name?: string | null; // Viene del JOIN en el backend
+  appointment_date: string; // 'YYYY-MM-DD'
+  appointment_time: string; // 'HH:MM:SS'
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  notes: string | null;
+  created_at: string;
+}

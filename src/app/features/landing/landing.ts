@@ -13,13 +13,14 @@ import { Lightbox } from './components/lightbox/lightbox';
 import { ServiceModal } from './components/service-modal/service-modal';
 import { WhatsappFab } from './components/whatsapp-fab/whatsapp-fab';
 import { Title, Meta } from '@angular/platform-browser';
+import { AppointmentModal } from './components/appointment-modal/appointment-modal';
 
 const GALLERY_PAGE = 8;
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink, IconComponent, RevealDirective, ServiceModal, Lightbox, WhatsappFab, ImageUrlPipe],
+  imports: [RouterLink, IconComponent, RevealDirective, ServiceModal, Lightbox, WhatsappFab, ImageUrlPipe, AppointmentModal],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './landing.html',
   styleUrl: './landing.scss'
@@ -44,6 +45,7 @@ export class Landing implements OnInit {
   selectedService = signal<Service | null>(null);
   lightboxIndex = signal<number | null>(null);
   galleryVisible = signal(GALLERY_PAGE);
+  appointmentModalOpen = signal(false);
 
   readonly year = new Date().getFullYear();
   readonly starList = [1, 2, 3, 4, 5];
@@ -119,15 +121,15 @@ export class Landing implements OnInit {
         if (s) {
           const pageTitle = `${s.business_name} - Peluquería y Spa`;
           const pageDesc = s.hero_subtitle || 'Descubre nuestros servicios de belleza y cuidado personal.';
-          
+
           this.titleService.setTitle(pageTitle);
           this.metaService.updateTag({ name: 'description', content: pageDesc });
-          
+
           // Open Graph (Para WhatsApp, Facebook, Instagram)
           this.metaService.updateTag({ property: 'og:title', content: pageTitle });
           this.metaService.updateTag({ property: 'og:description', content: pageDesc });
           this.metaService.updateTag({ property: 'og:type', content: 'website' });
-          
+
           // Si hay foto de portada, la ponemos como imagen de previsualización
           if (s.hero_image_url) {
             this.metaService.updateTag({ property: 'og:image', content: s.hero_image_url });

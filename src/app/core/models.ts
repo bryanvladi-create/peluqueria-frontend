@@ -60,8 +60,8 @@ export interface Promotion {
   subtitle: string | null;
   description: string | null;
   image_url: string | null;
-  start_date: string | null; // 'YYYY-MM-DD'
-  end_date: string | null;   // 'YYYY-MM-DD'
+  start_date: string | null;
+  end_date: string | null;
   is_active: boolean;
   created_at: string;
 }
@@ -75,6 +75,20 @@ export interface Testimonial {
   created_at: string;
 }
 
+export interface Appointment {
+  id: string;
+  client_name: string;
+  client_phone: string;
+  client_email: string | null;
+  service_id: string | null;
+  service_name?: string | null;
+  appointment_date: string;
+  appointment_time: string;
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  notes: string | null;
+  created_at: string;
+}
+
 export interface Stats {
   services_active: number;
   services_inactive: number;
@@ -83,24 +97,11 @@ export interface Stats {
   promotions_inactive: number;
   testimonials_active: number;
   testimonials_section_on: boolean;
+  appointments_pending: number;
 }
 
 export interface LoginResponse {
   message: string;
   token: string;
   admin: { id: string; username: string; email: string };
-}
-
-export interface Appointment {
-  id: string;
-  client_name: string;
-  client_phone: string;
-  client_email: string | null;
-  service_id: string | null;
-  service_name?: string | null; // Viene del JOIN en el backend
-  appointment_date: string; // 'YYYY-MM-DD'
-  appointment_time: string; // 'HH:MM:SS'
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
-  notes: string | null;
-  created_at: string;
 }

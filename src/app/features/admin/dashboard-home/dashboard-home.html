@@ -9,6 +9,12 @@
 
 <!-- Tarjetas de resumen -->
 <div class="stats-grid">
+  <div class="stat-card" style="border-left: 4px solid #E8A2B6;">
+    <h3>Citas Pendientes</h3>
+    <p class="number">{{ stats()?.appointments_pending ?? '–' }}</p>
+    <span class="subtitle">Requieren confirmación</span>
+  </div>
+
   <div class="stat-card">
     <h3>Servicios</h3>
     <p class="number">{{ stats()?.services_active ?? '–' }}</p>
@@ -26,19 +32,17 @@
     <p class="number">{{ stats()?.promotions_active ?? '–' }}</p>
     <span class="subtitle">Activas @if (stats(); as s) { | Inactivas: {{ s.promotions_inactive }} }</span>
   </div>
-
-  <div class="stat-card">
-    <h3>Testimonios</h3>
-    <p class="number">{{ stats()?.testimonials_active ?? '–' }}</p>
-    <span class="subtitle">
-      @if (stats(); as s) { {{ s.testimonials_section_on ? 'Sección visible' : 'Sección oculta' }} } @else { Activos }
-    </span>
-  </div>
 </div>
 
 <!-- Accesos Rápidos -->
 <h2 class="section-title">Accesos rápidos</h2>
 <div class="quick-access-grid">
+  <a routerLink="/admin/citas" class="quick-card">
+    <div class="icon-box">📅</div>
+    <h4>Ver Citas</h4>
+    <p>Revisar y confirmar reservas</p>
+  </a>
+
   <a routerLink="/admin/servicios" class="quick-card">
     <div class="icon-box">✂️</div>
     <h4>Gestionar Servicios</h4>
@@ -49,12 +53,6 @@
     <div class="icon-box">🖼️</div>
     <h4>Subir a Galería</h4>
     <p>Agregar o eliminar imágenes</p>
-  </a>
-
-  <a routerLink="/admin/promociones" class="quick-card">
-    <div class="icon-box">🏷️</div>
-    <h4>Crear Promoción</h4>
-    <p>Configurar banners y ofertas</p>
   </a>
 
   <a routerLink="/admin/configuracion" class="quick-card">

@@ -40,7 +40,31 @@
   color: #333;
 }
 
-/* Responsive igual que los otros paneles */
+/* 👇 CORRECCIÓN: Alineación de la columna de acciones en ESCRITORIO 👇 */
+.data-table td.actions {
+  display: flex;
+  align-items: center; /* Centra verticalmente el botón y el icono */
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Ajuste para que el botón de basura no se vea desalineado */
+.icon-btn.danger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #c0392b; /* Color rojo */
+  display: grid;
+  place-items: center;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.icon-btn.danger:hover {
+  background: #fdf2f2;
+}
+
+/* Responsive para móviles (se mantiene igual) */
 @media (max-width: 768px) {
   :host {
     display: block;
@@ -81,10 +105,13 @@
     text-align: left;
     white-space: normal !important;
   }
+
   .data-table td.actions {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
     gap: 12px;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 12px;
+    margin-top: 12px;
   }
 }

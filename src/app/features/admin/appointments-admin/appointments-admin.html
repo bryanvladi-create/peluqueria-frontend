@@ -1,7 +1,7 @@
 <div class="page-head">
   <div>
     <h1>Citas Agendadas</h1>
-    <p>Gestiona las reservas de tus clientes. Confirma, completa o cancela las citas.</p>
+    <p>Gestiona las reservas. Al confirmar o cancelar, se enviará un correo al cliente.</p>
   </div>
 </div>
 
@@ -11,7 +11,7 @@
   } @else if (appointments().length === 0) {
     <div class="empty-state">
       <strong>No hay citas agendadas</strong>
-      Las reservas que hagan tus clientes desde la web aparecerán aquí.
+      Las reservas que hagan tus clientes aparecerán aquí.
     </div>
   } @else {
     <div class="table-wrap">
@@ -32,16 +32,15 @@
               </td>
               <td>{{ appt.service_name || 'No especificado' }}</td>
               <td>
-                <span class="badge" [ngClass]="appt.status">
-                  {{ getStatusLabel(appt.status) }}
-                </span>
+                <span class="badge" [ngClass]="appt.status">{{ getStatusLabel(appt.status) }}</span>
               </td>
               <td class="actions">
                 @if (appt.status === 'pending') {
-                  <button type="button" class="btn btn-sm btn-solid" [disabled]="busyId() === appt.id" (click)="updateStatus(appt, 'confirmed')">Confirmar</button>
+                  <button type="button" class="btn btn-sm btn-solid" (click)="openModal(appt, 'confirmed')">Confirmar</button>
+                  <button type="button" class="btn btn-sm btn-outline" (click)="openModal(appt, 'cancelled')">Cancelar</button>
                 }
                 @if (appt.status === 'confirmed') {
-                  <button type="button" class="btn btn-sm btn-outline" [disabled]="busyId() === appt.id" (click)="updateStatus(appt, 'completed')">Completar</button>
+                  <button type="button" class="btn btn-sm btn-outline" (click)="remove(appt)">Completada</button>
                 }
                 <button type="button" class="icon-btn danger" (click)="remove(appt)" aria-label="Eliminar cita"><app-icon name="trash" /></button>
               </td>
@@ -52,3 +51,33 @@
     </div>
   }
 </div>
+
+<!-- MODAL DE CONFIRMACIÓN -->
+@if (modalOpen()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-card" role="dialog" (click)="$event.stopPropagation()">
+      <h2>{{ newStatus() === 'confirmed' ? 'Confirmar Cita' : 'Cancelar Cita' }}</h2>
+      <p class="modal-desc">
+        Estás a punto de <strong>{{ newStatus() === 'confirmed' ? 'confirmar' : 'cancelar' }}</strong> la cita de 
+        <strong>{{ selectedAppointment()?.client_name }}</strong>.
+      </p>
+
+      @if (newStatus() === 'cancelled') {
+        <div class="field">
+          <label for="reason">Motivo de cancelación (Opcional)</label>
+          <textarea id="reason" rows="3" [ngModel]="reason()" (ngModelChange)="reason.set($event)" placeholder="Ej. El horario no está disponible..."></textarea>
+          <span class="hint">Este mensaje se enviará al cliente en el correo.</span>
+        </div>
+      } @else {
+        <p class="success-hint">✅ Se enviará un correo al cliente confirmando su asistencia.</p>
+      }
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-line" (click)="closeModal()">Volver</button>
+        <button type="button" class="btn btn-solid" [disabled]="saving()" (click)="confirmAction()">
+          {{ saving() ? 'Enviando...' : (newStatus() === 'confirmed' ? 'Sí, confirmar' : 'Sí, cancelar') }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

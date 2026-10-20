@@ -1,0 +1,18 @@
+<div class="backdrop" (click)="closed.emit()">
+  <div class="viewer" role="dialog" aria-modal="true" aria-label="Galería de fotos"
+       (click)="$event.stopPropagation()" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+    <button type="button" class="close" aria-label="Cerrar" (click)="closed.emit()"><app-icon name="x" /></button>
+
+    @if (images()[index()]; as current) {
+      <img class="photo" [src]="current.image_url | imageUrl" [alt]="current.alt_text || 'Foto de la galería'" />
+      <a class="open-original" [href]="current.image_url | imageUrl" target="_blank" rel="noopener noreferrer"
+         aria-label="Abrir la imagen original en una pestaña nueva"><app-icon name="expand" /></a>
+    }
+
+    @if (images().length > 1) {
+      <button type="button" class="nav prev" aria-label="Foto anterior" (click)="go(-1)"><app-icon name="chevron-left" /></button>
+      <button type="button" class="nav next" aria-label="Foto siguiente" (click)="go(1)"><app-icon name="chevron-right" /></button>
+    }
+    <p class="counter" aria-live="polite">{{ index() + 1 }} / {{ images().length }}</p>
+  </div>
+</div>

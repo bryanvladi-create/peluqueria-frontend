@@ -1,0 +1,121 @@
+.upload-btn { 
+  align-self: flex-start; 
+  cursor: pointer; 
+  margin-top: 6px; 
+}
+
+/* ---- RESPONSIVE PARA TABLA EN MÓVIL ---- */
+@media (max-width: 768px) {
+  :host {
+    display: block;
+    max-width: 100vw;
+    overflow-x: hidden; /* Evita que la página se desplace a los lados */
+  }
+
+  .panel {
+    padding: 12px !important; /* Reducimos el padding del panel para que quepa mejor */
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .table-wrap { 
+    overflow-x: hidden; 
+    width: 100%;
+  }
+
+  .data-table, .data-table tbody, .data-table tr, .data-table td { 
+    display: block; 
+    width: 100% !important; 
+    box-sizing: border-box;
+  }
+  
+  .data-table thead { 
+    display: none; 
+  }
+  
+  .data-table tr {
+    margin-bottom: 16px; 
+    border: 1px solid #EAEAEA; 
+    border-radius: 12px; 
+    padding: 16px; 
+    background: #fff; 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+  
+  .data-table td { 
+    border: none; 
+    padding: 6px 0; 
+    text-align: left;
+    /* ESTO ARREGLA EL CORTE DE TEXTO Y EL SCROLL HORIZONTAL */
+    white-space: normal !important; 
+    text-overflow: clip !important;
+    overflow: visible !important;
+    word-wrap: break-word;
+  }
+  
+  /* Imagen del servicio */
+  .data-table td:nth-child(1) { 
+    text-align: center; 
+    margin-bottom: 12px; 
+  }
+  .data-table td:nth-child(1) img, .data-table td:nth-child(1) .thumb-sm { 
+    width: 120px; 
+    height: 120px; 
+    border-radius: 8px; 
+  }
+  
+  /* Nombre y descripción */
+  .data-table td:nth-child(2) { 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+    border-bottom: 1px solid #f0f0f0; 
+    padding-bottom: 12px; 
+    margin-bottom: 8px; 
+    color: #1a1a1a; 
+  }
+  
+  /* Forzamos a que el subtítulo baje de línea */
+  .data-table td:nth-child(2) .sub {
+    white-space: normal !important;
+    display: block;
+    margin-top: 4px;
+    font-weight: 400;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  /* Cantidad de fotos */
+  .data-table td:nth-child(3) { 
+    color: #666; 
+    font-size: 0.9rem; 
+  }
+  .data-table td:nth-child(3)::before { 
+    content: "Fotos: "; 
+    font-weight: 600; 
+    color: #333;
+  }
+  
+  /* Interruptor de estado (Toggle) */
+  .data-table td:nth-child(4) { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-top: 8px; 
+  }
+  .data-table td:nth-child(4)::before { 
+    content: "Estado:"; 
+    font-weight: 600; 
+    font-size: 0.9rem; 
+    color: #333; 
+  }
+  
+  /* Botones de acción (Editar/Eliminar) */
+  .data-table td.actions { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 16px; 
+    border-top: 1px solid #f0f0f0; 
+    padding-top: 12px; 
+    margin-top: 12px; 
+  }
+}

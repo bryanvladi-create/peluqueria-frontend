@@ -1,0 +1,43 @@
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F8F9FA; /* Fondo claro para el panel */
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 260px; 
+  background-color: #F8F9FA; /* Fondo claro */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #333; /* Texto oscuro para contrastar */
+}
+
+.content-wrapper {
+  padding: 40px;
+}
+
+/* --- BARRA MÓVIL Y RESPONSIVE --- */
+.mobile-header {
+  display: none; 
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6); z-index: 998;
+  &.active { display: block; }
+}
+
+@media (max-width: 768px) {
+  .main-content { margin-left: 0; }
+  .mobile-header {
+    display: flex; align-items: center; gap: 15px; padding: 15px 20px;
+    position: sticky; top: 0; z-index: 900;
+  }
+  .hamburger-btn { background: none; border: none; color: #333; font-size: 1.8rem; cursor: pointer; }
+  .mobile-title { font-weight: 600; color: #333; }
+  .content-wrapper { padding: 20px; }
+}

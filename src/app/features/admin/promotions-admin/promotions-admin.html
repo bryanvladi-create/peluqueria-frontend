@@ -1,0 +1,111 @@
+<div class="page-head">
+  <div>
+    <h1>Promociones</h1>
+    <p>Crea banners para fechas comerciales o temporadas. Apágalas con el interruptor para ocultarlas sin borrarlas y reutilizarlas después.</p>
+  </div>
+  <button type="button" class="btn btn-solid" (click)="openNew()"><app-icon name="plus" /> Nueva promoción</button>
+</div>
+
+<div class="panel">
+  @if (loading()) {
+    <p class="empty-state">Cargando promociones…</p>
+  } @else if (promotions().length === 0) {
+    <div class="empty-state">
+      <strong>No hay promociones</strong>
+      Crea una para destacarla en la web.
+    </div>
+  } @else {
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Imagen</th><th>Nombre</th><th>Estado</th><th>Vigencia</th><th class="actions">Acciones</th></tr>
+        </thead>
+        <tbody>
+          @for (promo of promotions(); track promo.id) {
+            <tr>
+              <td>
+                @if (promo.image_url) { <img class="thumb-sm" [src]="promo.image_url | imageUrl" alt="" loading="lazy" /> }
+                @else { <span class="thumb-sm" aria-hidden="true"></span> }
+              </td>
+              <td>{{ promo.title }}@if (promo.subtitle) { <span class="sub">{{ promo.subtitle }}</span> }</td>
+              <td>
+                <app-toggle [checked]="promo.is_active" [disabled]="busyId() === promo.id"
+                            [label]="(promo.is_active ? 'Ocultar ' : 'Mostrar ') + promo.title"
+                            (changed)="setActive(promo, $event)" />
+              </td>
+              <td>
+                {{ vigencia(promo) }}
+                @if (isExpired(promo)) { <span class="badge warn">Vencida</span> }
+              </td>
+              <td class="actions">
+                <button type="button" class="icon-btn" [attr.aria-label]="'Editar ' + promo.title" (click)="openEdit(promo)"><app-icon name="edit" /></button>
+                <button type="button" class="icon-btn danger" [attr.aria-label]="'Eliminar ' + promo.title" (click)="remove(promo)"><app-icon name="trash" /></button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+@if (modalOpen()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="promo-form-title" (click)="$event.stopPropagation()">
+      <h2 id="promo-form-title">{{ editing() ? 'Editar promoción' : 'Nueva promoción' }}</h2>
+
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="field">
+          <label for="promo-title">Título</label>
+          <input id="promo-title" type="text" formControlName="title" placeholder="Ej. Promoción Especial" />
+          @if (form.controls.title.invalid && form.controls.title.touched) { <span class="invalid-msg">El título es obligatorio.</span> }
+        </div>
+
+        <div class="field">
+          <label for="promo-sub">Subtítulo</label>
+          <input id="promo-sub" type="text" formControlName="subtitle" placeholder="Ej. Color + Corte" />
+        </div>
+
+        <div class="field">
+          <label for="promo-desc">Descripción</label>
+          <textarea id="promo-desc" formControlName="description" rows="3"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="promo-start">Válida desde</label>
+            <input id="promo-start" type="date" formControlName="start_date" />
+          </div>
+          <div class="field">
+            <label for="promo-end">Válida hasta</label>
+            <input id="promo-end" type="date" formControlName="end_date" />
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="label">Imagen del banner (opcional)</span>
+          @if (imagePreview(); as src) {
+            <div class="file-list"><div class="file-chip wide"><img [src]="src | imageUrl" alt="Vista previa del banner" /></div></div>
+          }
+          <label class="btn btn-line upload-btn">
+            <app-icon name="upload" /> {{ imagePreview() ? 'Cambiar imagen' : 'Subir imagen' }}
+            <input type="file" accept="image/jpeg,image/png,image/webp" hidden (change)="onImage($event)" />
+          </label>
+        </div>
+
+        <div class="field">
+          <div class="switch-row">
+            <span class="label">Visible en la web</span>
+            <app-toggle [checked]="form.controls.is_active.value" label="Visible en la web"
+                        (changed)="form.controls.is_active.setValue($event)" />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-line" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-solid" [disabled]="saving()">{{ saving() ? 'Guardando…' : 'Guardar promoción' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

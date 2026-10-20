@@ -1,0 +1,13 @@
+.upload-btn { cursor: pointer; }
+.upload-btn.disabled { opacity: .6; pointer-events: none; }
+.count { font-size: .82rem; color: #777; margin-bottom: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.item { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: #ecd7df; margin: 0; }
+.item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.delete { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; border-radius: 8px; border: 0; cursor: pointer; display: grid; place-items: center;
+  background: rgba(20, 20, 24, .72); color: #fff; opacity: 0; transition: opacity .2s, background .2s; }
+.item:hover .delete, .delete:focus-visible { opacity: 1; }
+.delete:hover { background: #c0392b; }
+.delete:focus-visible { outline: 2px solid #E8A2B6; outline-offset: 2px; }
+/* En pantallas táctiles no hay hover: el botón de borrar queda siempre visible */
+@media (hover: none) { .delete { opacity: 1; } }

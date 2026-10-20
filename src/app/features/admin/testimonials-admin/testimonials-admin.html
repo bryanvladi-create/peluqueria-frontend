@@ -1,0 +1,93 @@
+<div class="page-head">
+  <div>
+    <h1>Testimonios</h1>
+    <p>Muestra las opiniones de tus clientes. Si apagas la sección, desaparece de la web sin dejar espacios vacíos.</p>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="switch-row">
+    <div>
+      <h2>Mostrar sección de testimonios</h2>
+      <p class="muted">Se muestran las reseñas activas de la lista de abajo y el resumen de Google.</p>
+    </div>
+    <app-toggle [checked]="sectionOn()" [disabled]="savingSection() || !settings()" label="Mostrar sección de testimonios"
+                (changed)="setSection($event)" />
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Resumen de Google Maps</h2>
+  <p class="muted">Copia la calificación y el número de reseñas que ves en tu ficha de Google. Se muestran junto a los testimonios.</p>
+  <form [formGroup]="google" (ngSubmit)="saveGoogle()" class="google-form">
+    <div class="field">
+      <label for="g-rating">Calificación (0 a 5)</label>
+      <input id="g-rating" type="number" step="0.1" min="0" max="5" formControlName="rating" placeholder="4.8" />
+      @if (google.controls.rating.invalid) { <span class="invalid-msg">Debe estar entre 0 y 5.</span> }
+    </div>
+    <div class="field">
+      <label for="g-count">Cantidad de reseñas</label>
+      <input id="g-count" type="number" step="1" min="0" formControlName="count" placeholder="124" />
+    </div>
+    <button type="submit" class="btn btn-solid" [disabled]="savingGoogle() || !settings()">{{ savingGoogle() ? 'Guardando…' : 'Guardar resumen' }}</button>
+  </form>
+</div>
+
+<div class="panel">
+  <h2>Agregar testimonio</h2>
+  <form [formGroup]="newForm" (ngSubmit)="add()">
+    <div class="field-row">
+      <div class="field">
+        <label for="t-name">Nombre del cliente</label>
+        <input id="t-name" type="text" formControlName="client_name" />
+        @if (newForm.controls.client_name.invalid && newForm.controls.client_name.touched) { <span class="invalid-msg">Escribe el nombre.</span> }
+      </div>
+      <div class="field">
+        <label for="t-rating">Calificación</label>
+        <select id="t-rating" formControlName="rating">
+          @for (n of ratings; track n) { <option [ngValue]="n">{{ n }} {{ n === 1 ? 'estrella' : 'estrellas' }}</option> }
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="t-text">Reseña</label>
+      <textarea id="t-text" formControlName="review_text" rows="3"></textarea>
+      @if (newForm.controls.review_text.invalid && newForm.controls.review_text.touched) { <span class="invalid-msg">Escribe la reseña.</span> }
+    </div>
+    <button type="submit" class="btn btn-solid" [disabled]="adding()"><app-icon name="plus" /> {{ adding() ? 'Agregando…' : 'Agregar testimonio' }}</button>
+  </form>
+</div>
+
+<div class="panel">
+  <h2>Testimonios cargados</h2>
+  @if (loading()) {
+    <p class="empty-state">Cargando testimonios…</p>
+  } @else if (items().length === 0) {
+    <div class="empty-state">
+      <strong>Aún no hay testimonios</strong>
+      Agrega el primero arriba. Mientras no haya ninguno activo, la sección no se muestra en la web.
+    </div>
+  } @else {
+    <ul class="review-list">
+      @for (item of items(); track item.id) {
+        <li class="review-row">
+          <div class="review-main">
+            <div class="review-top">
+              <strong>{{ item.client_name }}</strong>
+              <span class="stars" role="img" [attr.aria-label]="item.rating + ' de 5 estrellas'">
+                @for (star of starList; track star) { <app-icon name="star" [class.off]="star > item.rating" /> }
+              </span>
+            </div>
+            <p>{{ item.review_text }}</p>
+          </div>
+          <div class="review-actions">
+            <app-toggle [checked]="item.is_active" [disabled]="busyId() === item.id"
+                        [label]="(item.is_active ? 'Ocultar' : 'Mostrar') + ' testimonio de ' + item.client_name"
+                        (changed)="setActive(item, $event)" />
+            <button type="button" class="icon-btn danger" [attr.aria-label]="'Eliminar testimonio de ' + item.client_name" (click)="remove(item)"><app-icon name="trash" /></button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>

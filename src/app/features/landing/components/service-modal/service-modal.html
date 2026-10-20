@@ -1,0 +1,43 @@
+<div class="backdrop" (click)="closed.emit()">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="service-modal-title" (click)="$event.stopPropagation()">
+    <button type="button" class="close" aria-label="Cerrar ventana" (click)="closed.emit()"><app-icon name="x" /></button>
+
+    <div class="media">
+      @if (activeImage(); as src) {
+        <img class="main" [src]="src | imageUrl" [alt]="service().name" />
+      } @else {
+        <div class="main placeholder" aria-hidden="true"></div>
+      }
+      @if (service().images.length > 1) {
+        <div class="thumbs">
+          @for (image of service().images; track image.id; let i = $index) {
+            <button type="button" class="thumb" [class.active]="i === activeIndex()"
+                    [attr.aria-label]="'Ver foto ' + (i + 1)" [attr.aria-current]="i === activeIndex()"
+                    (click)="activeIndex.set(i)">
+              <img [src]="image.image_url | imageUrl" alt="" loading="lazy" />
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="info">
+      <h2 id="service-modal-title">{{ service().name }}</h2>
+      @if (service().short_description) { <p class="short">{{ service().short_description }}</p> }
+      @if (service().detailed_description) { <p class="detail">{{ service().detailed_description }}</p> }
+
+      @if (service().benefits.length) {
+        <h3>Beneficios</h3>
+        <ul class="benefits">
+          @for (benefit of service().benefits; track $index) {
+            <li><app-icon name="check" /> <span>{{ benefit }}</span></li>
+          }
+        </ul>
+      }
+
+      @if (bookingUrl(); as href) {
+        <a class="cta" [href]="href" target="_blank" rel="noopener noreferrer">Agendar tu cita</a>
+      }
+    </div>
+  </div>
+</div>

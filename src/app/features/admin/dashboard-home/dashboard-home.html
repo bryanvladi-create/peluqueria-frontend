@@ -1,0 +1,65 @@
+<div class="dashboard-header">
+  <h1>Hola, {{ adminName() || 'Administrador' }} 👋</h1>
+  <p>Bienvenido, aquí puedes gestionar todo el contenido de tu sitio web.</p>
+</div>
+
+@if (failed()) {
+  <p class="form-error" role="alert">No se pudieron cargar los datos del resumen. Revisa que el servidor esté en marcha.</p>
+}
+
+<!-- Tarjetas de resumen -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <h3>Servicios</h3>
+    <p class="number">{{ stats()?.services_active ?? '–' }}</p>
+    <span class="subtitle">Activos @if (stats(); as s) { | Inactivos: {{ s.services_inactive }} }</span>
+  </div>
+
+  <div class="stat-card">
+    <h3>Galería</h3>
+    <p class="number">{{ stats()?.gallery_total ?? '–' }}</p>
+    <span class="subtitle">Imágenes</span>
+  </div>
+
+  <div class="stat-card">
+    <h3>Promociones</h3>
+    <p class="number">{{ stats()?.promotions_active ?? '–' }}</p>
+    <span class="subtitle">Activas @if (stats(); as s) { | Inactivas: {{ s.promotions_inactive }} }</span>
+  </div>
+
+  <div class="stat-card">
+    <h3>Testimonios</h3>
+    <p class="number">{{ stats()?.testimonials_active ?? '–' }}</p>
+    <span class="subtitle">
+      @if (stats(); as s) { {{ s.testimonials_section_on ? 'Sección visible' : 'Sección oculta' }} } @else { Activos }
+    </span>
+  </div>
+</div>
+
+<!-- Accesos Rápidos -->
+<h2 class="section-title">Accesos rápidos</h2>
+<div class="quick-access-grid">
+  <a routerLink="/admin/servicios" class="quick-card">
+    <div class="icon-box">✂️</div>
+    <h4>Gestionar Servicios</h4>
+    <p>Crear, editar o desactivar servicios</p>
+  </a>
+
+  <a routerLink="/admin/galeria" class="quick-card">
+    <div class="icon-box">🖼️</div>
+    <h4>Subir a Galería</h4>
+    <p>Agregar o eliminar imágenes</p>
+  </a>
+
+  <a routerLink="/admin/promociones" class="quick-card">
+    <div class="icon-box">🏷️</div>
+    <h4>Crear Promoción</h4>
+    <p>Configurar banners y ofertas</p>
+  </a>
+
+  <a routerLink="/admin/configuracion" class="quick-card">
+    <div class="icon-box">⚙️</div>
+    <h4>Editar Redes Sociales</h4>
+    <p>Actualizar enlaces y contactos</p>
+  </a>
+</div>

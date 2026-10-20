@@ -1,0 +1,35 @@
+<aside class="sidebar" [class.open]="isOpen">
+  <div class="sidebar-header">
+    <h2>{{ businessName() }}</h2>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="onLinkClick()">
+      <span class="icon">🏠</span> Dashboard
+    </a>
+    <a routerLink="/admin/servicios" routerLinkActive="active" (click)="onLinkClick()">
+      <span class="icon">✂️</span> Servicios
+    </a>
+    <a routerLink="/admin/galeria" routerLinkActive="active" (click)="onLinkClick()">
+      <span class="icon">🖼️</span> Galería
+    </a>
+    <a routerLink="/admin/promociones" routerLinkActive="active" (click)="onLinkClick()">
+      <span class="icon">🏷️</span> Promociones
+    </a>
+    <a routerLink="/admin/testimonios" routerLinkActive="active" (click)="onLinkClick()">
+      <span class="icon">⭐</span> Testimonios
+    </a>
+    <a routerLink="/admin/configuracion" routerLinkActive="active" (click)="onLinkClick()">
+      <span class="icon">⚙️</span> Configuración
+    </a>
+    <a href="/" target="_blank" rel="noopener">
+      <span class="icon">🌐</span> Ver sitio web
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="/gestion" class="logout" (click)="logout($event)">
+      <span class="icon">🚪</span> Cerrar Sesión
+    </a>
+  </div>
+</aside>

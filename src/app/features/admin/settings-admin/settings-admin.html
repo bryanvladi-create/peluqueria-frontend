@@ -1,0 +1,128 @@
+<div class="page-head">
+  <div>
+    <h1>Configuración</h1>
+    <p>Los cambios se reflejan al instante en el pie de página, los enlaces de redes, el botón de WhatsApp y el mapa de la web.</p>
+  </div>
+  <button type="submit" form="settings-form" class="btn btn-solid" [disabled]="saving() || loading()">{{ saving() ? 'Guardando…' : 'Guardar cambios' }}</button>
+</div>
+
+@if (loading()) {
+  <div class="panel"><p class="empty-state">Cargando configuración…</p></div>
+} @else {
+  <form id="settings-form" [formGroup]="form" (ngSubmit)="save()">
+
+    <section class="panel">
+      <h2>Redes sociales y contacto</h2>
+      <div class="field">
+        <label for="s-wa">WhatsApp</label>
+        <input id="s-wa" type="tel" formControlName="whatsapp_number" placeholder="+593 99 123 4567" autocomplete="off" />
+        <span class="hint">Con código de país. Es el número del botón flotante y de los botones "Agendar" y "Reservar".</span>
+        @if (form.controls.whatsapp_number.invalid && form.controls.whatsapp_number.touched) { <span class="invalid-msg">Usa solo números, espacios o guiones (ej. +593 99 123 4567).</span> }
+      </div>
+      <div class="field">
+        <label for="s-fb">Facebook</label>
+        <input id="s-fb" type="url" formControlName="facebook_url" placeholder="https://facebook.com/tu-pagina" />
+        @if (form.controls.facebook_url.invalid && form.controls.facebook_url.touched) { <span class="invalid-msg">Escribe el enlace completo, empezando con https://</span> }
+      </div>
+      <div class="field">
+        <label for="s-ig">Instagram</label>
+        <input id="s-ig" type="url" formControlName="instagram_url" placeholder="https://instagram.com/tu-cuenta" />
+        @if (form.controls.instagram_url.invalid && form.controls.instagram_url.touched) { <span class="invalid-msg">Escribe el enlace completo, empezando con https://</span> }
+      </div>
+      <div class="field">
+        <label for="s-tt">TikTok</label>
+        <input id="s-tt" type="url" formControlName="tiktok_url" placeholder="https://tiktok.com/@tu-cuenta" />
+        @if (form.controls.tiktok_url.invalid && form.controls.tiktok_url.touched) { <span class="invalid-msg">Escribe el enlace completo, empezando con https://</span> }
+        <span class="hint">Si dejas una red vacía, su ícono no aparece en la web.</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Negocio y portada</h2>
+      <div class="field">
+        <label for="s-name">Nombre del negocio</label>
+        <input id="s-name" type="text" formControlName="business_name" />
+        @if (form.controls.business_name.invalid && form.controls.business_name.touched) { <span class="invalid-msg">El nombre es obligatorio.</span> }
+      </div>
+      <div class="field">
+        <label for="s-eyebrow">Frase sobre el título</label>
+        <input id="s-eyebrow" type="text" formControlName="hero_eyebrow" placeholder="Tu estilo, nuestra pasión" />
+      </div>
+      <div class="field">
+        <label for="s-title">Título principal</label>
+        <input id="s-title" type="text" formControlName="hero_title" placeholder="Realza tu belleza, confía en expertos" />
+        <span class="hint">Lo que va después de la primera coma se resalta en rosa.</span>
+      </div>
+      <div class="field">
+        <label for="s-sub">Texto de presentación</label>
+        <textarea id="s-sub" formControlName="hero_subtitle" rows="3"></textarea>
+      </div>
+      
+      <div class="field">
+        <span class="label">Foto de portada</span>
+        @if (settings()?.hero_image_url; as src) { <img class="hero-preview" [src]="src | imageUrl" alt="Foto de portada actual" /> }
+        
+        <label class="btn btn-line upload-btn" [class.disabled]="uploadingHero()">
+          <app-icon name="upload" /> {{ uploadingHero() ? 'Subiendo…' : (settings()?.hero_image_url ? 'Cambiar foto' : 'Subir foto') }}
+          <input type="file" accept="image/jpeg,image/png,image/webp" hidden [disabled]="uploadingHero()" (change)="onHeroImage($event)" />
+        </label>
+        
+        <!-- ADVERTENCIA DE REQUISITOS -->
+        <span class="hint" style="color: #c0392b; font-weight: 500; margin-top: 8px; display: inline-block;">
+          ⚠️ Requisito: La imagen debe ser <strong>horizontal</strong> (más ancha que alta), como mínimo de 1920x1080 px. No se aceptan imágenes verticales.
+        </span>
+        
+        <span class="hint">Se guarda al elegirla. Funciona mejor con la persona o el sujeto principal a la derecha.</span>
+      </div>
+
+      <div class="field">
+        <label for="s-position">Ajuste de la imagen (Encuadre)</label>
+        <select id="s-position" formControlName="hero_image_position">
+          <option value="center">Centro (Por defecto)</option>
+          <option value="center 20%">Enfocar arriba</option>
+          <option value="center 80%">Enfocar abajo</option>
+          <option value="left center">Enfocar a la izquierda</option>
+          <option value="right center">Enfocar a la derecha</option>
+        </select>
+        <span class="hint">Elige qué parte de la foto quieres que sea la más visible.</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Ubicación y horario</h2>
+      <div class="field-row">
+        <div class="field">
+          <label for="s-city">Ciudad</label>
+          <input id="s-city" type="text" formControlName="city" placeholder="[Ciudad]" />
+        </div>
+        <div class="field">
+          <label for="s-hours">Horario</label>
+          <input id="s-hours" type="text" formControlName="opening_hours" placeholder="Lunes a Sábado 09:00 - 19:00" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="s-address">Dirección del local</label>
+        <textarea id="s-address" formControlName="address_text" rows="2"></textarea>
+      </div>
+      <div class="field">
+        <label for="s-map">Mapa de Google Maps</label>
+        <textarea id="s-map" formControlName="map_embed_url" rows="3" placeholder='Pega aquí el código <iframe ...> o la URL del mapa'></textarea>
+        <span class="hint">En Google Maps: busca tu local → Compartir → Insertar un mapa → Copiar HTML. Si el local se traslada, pega el nuevo código y el mapa de la web se actualiza.</span>
+        @if (mapUrl() && !mapValid()) { <span class="invalid-msg">Este código no es un mapa de Google Maps válido. Debe empezar con https://www.google.com/maps/embed</span> }
+      </div>
+      @if (mapPreview(); as src) {
+        <div class="map-preview"><iframe [src]="src" title="Vista previa del mapa" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+      }
+      <div class="field">
+        <label for="s-gmaps">Enlace para "Cómo llegar"</label>
+        <input id="s-gmaps" type="url" formControlName="google_maps_url" placeholder="https://maps.google.com/?q=..." />
+        <span class="hint">Opcional. Si lo dejas vacío, se genera desde la dirección.</span>
+        @if (form.controls.google_maps_url.invalid && form.controls.google_maps_url.touched) { <span class="invalid-msg">Escribe el enlace completo, empezando con https://</span> }
+      </div>
+    </section>
+
+    <div class="bottom-actions">
+      <button type="submit" class="btn btn-solid" [disabled]="saving()">{{ saving() ? 'Guardando…' : 'Guardar cambios' }}</button>
+    </div>  
+  </form>
+}

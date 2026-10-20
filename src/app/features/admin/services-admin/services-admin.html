@@ -1,0 +1,116 @@
+<div class="page-head">
+  <div>
+    <h1>Servicios</h1>
+    <p>Cada servicio aparece como una tarjeta en la web. Al hacer clic, el cliente ve su detalle, beneficios y fotos.</p>
+  </div>
+  <button type="button" class="btn btn-solid" (click)="openNew()"><app-icon name="plus" /> Nuevo servicio</button>
+</div>
+
+<div class="panel">
+  @if (loading()) {
+    <p class="empty-state">Cargando servicios…</p>
+  } @else if (services().length === 0) {
+    <div class="empty-state">
+      <strong>Aún no hay servicios</strong>
+      Crea el primero para que aparezca en la web.
+    </div>
+  } @else {
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Imagen</th><th>Nombre</th><th>Fotos</th><th>Estado</th><th class="actions">Acciones</th></tr>
+        </thead>
+        <tbody>
+          @for (service of services(); track service.id) {
+            <tr>
+              <td>
+                @if (service.cover_image_url) { <img class="thumb-sm" [src]="service.cover_image_url | imageUrl" alt="" loading="lazy" /> }
+                @else { <span class="thumb-sm" aria-hidden="true"></span> }
+              </td>
+              <td>{{ service.name }}@if (service.short_description) { <span class="sub">{{ service.short_description }}</span> }</td>
+              <td>{{ service.images.length }}</td>
+              <td>
+                <app-toggle [checked]="service.is_active" [disabled]="busyId() === service.id"
+                            [label]="(service.is_active ? 'Ocultar ' : 'Mostrar ') + service.name"
+                            (changed)="setActive(service, $event)" />
+              </td>
+              <td class="actions">
+                <button type="button" class="icon-btn" [attr.aria-label]="'Editar ' + service.name" (click)="openEdit(service)"><app-icon name="edit" /></button>
+                <button type="button" class="icon-btn danger" [attr.aria-label]="'Eliminar ' + service.name" (click)="remove(service)"><app-icon name="trash" /></button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+@if (modalOpen()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="svc-form-title" (click)="$event.stopPropagation()">
+      <h2 id="svc-form-title">{{ editing() ? 'Editar servicio' : 'Nuevo servicio' }}</h2>
+
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="field">
+          <label for="svc-name">Nombre del servicio</label>
+          <input id="svc-name" type="text" formControlName="name" placeholder="Ej. Expertos en Color" />
+          @if (form.controls.name.invalid && form.controls.name.touched) { <span class="invalid-msg">El nombre es obligatorio.</span> }
+        </div>
+
+        <div class="field">
+          <label for="svc-short">Descripción corta (para la tarjeta)</label>
+          <input id="svc-short" type="text" formControlName="short_description" maxlength="120" />
+        </div>
+
+        <div class="field">
+          <label for="svc-detail">Descripción detallada (para la ventana flotante)</label>
+          <textarea id="svc-detail" formControlName="detailed_description" rows="4"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="svc-benefits">Beneficios</label>
+          <textarea id="svc-benefits" formControlName="benefits" rows="4" placeholder="Un beneficio por línea"></textarea>
+          <span class="hint">Escribe un beneficio por línea.</span>
+        </div>
+
+        <div class="field">
+          <span class="label">Fotos del servicio</span>
+          <div class="file-list">
+            @for (image of editing()?.images ?? []; track image.id) {
+              <div class="file-chip">
+                <img [src]="image.image_url | imageUrl" alt="" />
+                <button type="button" aria-label="Eliminar foto" (click)="removeExistingImage(image.id)">×</button>
+              </div>
+            }
+            @for (item of pending(); track item.url; let i = $index) {
+              <div class="file-chip">
+                <img [src]="item.url | imageUrl" alt="" />
+                <span class="new-tag">Nueva</span>
+                <button type="button" aria-label="Quitar foto" (click)="removePending(i)">×</button>
+              </div>
+            }
+          </div>
+          <label class="btn btn-line upload-btn">
+            <app-icon name="upload" /> Agregar fotos
+            <input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden (change)="onFiles($event)" />
+          </label>
+          <span class="hint">JPG, PNG o WebP, hasta 8 MB cada una. La primera foto es la portada de la tarjeta.</span>
+        </div>
+
+        <div class="field">
+          <div class="switch-row">
+            <span class="label">Visible en la web</span>
+            <app-toggle [checked]="form.controls.is_active.value" label="Visible en la web"
+                        (changed)="form.controls.is_active.setValue($event)" />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-line" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-solid" [disabled]="saving()">{{ saving() ? 'Guardando…' : 'Guardar servicio' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

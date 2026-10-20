@@ -1,0 +1,15 @@
+.muted { color: #777; font-size: .85rem; line-height: 1.5; }
+.switch-row h2 { margin-bottom: 4px; }
+.google-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0 16px; margin-top: 14px; }
+.google-form .field { width: 190px; }
+.google-form .btn { margin-bottom: 16px; }
+.review-list { list-style: none; display: grid; }
+.review-row { display: flex; justify-content: space-between; gap: 18px; padding: 14px 0; border-bottom: 1px solid #f1f1f4; }
+.review-row:last-child { border-bottom: 0; }
+.review-main { min-width: 0; }
+.review-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; font-size: .9rem; color: #222; }
+.review-main p { font-size: .85rem; color: #555; line-height: 1.5; }
+.stars { display: inline-flex; gap: 2px; color: #f2a93b; font-size: .85rem; }
+.stars app-icon.off { color: #d9d9df; }
+.review-actions { display: flex; align-items: center; gap: 8px; align-self: flex-start; flex: none; }
+@media (max-width: 560px) { .review-row { flex-direction: column; } }

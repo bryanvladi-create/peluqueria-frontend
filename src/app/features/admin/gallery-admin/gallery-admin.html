@@ -1,0 +1,31 @@
+<div class="page-head">
+  <div>
+    <h1>Galería</h1>
+    <p>Las fotos que subas aparecen en la galería de la web y se pueden ampliar con un clic.</p>
+  </div>
+  <label class="btn btn-solid upload-btn" [class.disabled]="uploading()">
+    <app-icon name="upload" /> {{ uploading() ? 'Subiendo…' : 'Subir imágenes' }}
+    <input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden [disabled]="uploading()" (change)="onFiles($event)" />
+  </label>
+</div>
+
+<div class="panel">
+  @if (loading()) {
+    <p class="empty-state">Cargando galería…</p>
+  } @else if (images().length === 0) {
+    <div class="empty-state">
+      <strong>La galería está vacía</strong>
+      Sube fotos de tus trabajos para mostrarlas en la web.
+    </div>
+  } @else {
+    <p class="count">{{ images().length }} {{ images().length === 1 ? 'imagen' : 'imágenes' }}</p>
+    <div class="grid">
+      @for (image of images(); track image.id) {
+        <figure class="item">
+          <img [src]="image.image_url | imageUrl" [alt]="image.alt_text || 'Foto de la galería'" loading="lazy" />
+          <button type="button" class="delete" aria-label="Eliminar imagen" (click)="remove(image)"><app-icon name="trash" /></button>
+        </figure>
+      }
+    </div>
+  }
+</div>

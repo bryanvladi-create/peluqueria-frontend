@@ -112,23 +112,31 @@
   }
 
   <!-- Promociones activas -->
+  <!-- Promociones activas -->
   @if (promotions().length) {
   <section id="promociones" class="section dark promos">
-    <div class="container promo-list">
-      @for (promo of promotions(); track promo.id) {
-      <article class="promo" [class.has-image]="!!promo.image_url">
-        @if (promo.image_url) { <img class="promo-img" [src]="promo.image_url | imageUrl" alt="" loading="lazy" /> }
-        <div class="promo-body">
-          <h2>{{ promo.title }}</h2>
-          @if (promo.subtitle) { <p class="promo-sub">{{ promo.subtitle }}</p> }
-          @if (promo.description) { <p class="promo-text">{{ promo.description }}</p> }
-          @if (promoHref(promo); as href) {
-          <a class="btn-pink" [href]="href" target="_blank" rel="noopener noreferrer">Reservar ahora</a>
-          }
-        </div>
-        @if (promoUntil(promo); as until) { <span class="promo-badge">{{ until }}</span> }
-      </article>
-      }
+    <div class="container">
+      <div class="section-head">
+        <h2>Promociones y Ofertas</h2>
+        <p>Descubre nuestros descuentos exclusivos por tiempo limitado</p>
+      </div>
+
+      <div class="promo-list">
+        @for (promo of promotions(); track promo.id) {
+        <article class="promo" [class.has-image]="!!promo.image_url">
+          @if (promo.image_url) { <img class="promo-img" [src]="promo.image_url | imageUrl" alt="" loading="lazy" /> }
+          <div class="promo-body">
+            <h2>{{ promo.title }}</h2>
+            @if (promo.subtitle) { <p class="promo-sub">{{ promo.subtitle }}</p> }
+            @if (promo.description) { <p class="promo-text">{{ promo.description }}</p> }
+            @if (promoHref(promo); as href) {
+            <a class="btn-pink" [href]="href" target="_blank" rel="noopener noreferrer">Reservar ahora</a>
+            }
+          </div>
+          @if (promoUntil(promo); as until) { <span class="promo-badge">{{ until }}</span> }
+        </article>
+        }
+      </div>
     </div>
   </section>
   }

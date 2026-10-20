@@ -12,6 +12,7 @@ import { RevealDirective } from '../../shared/reveal.directive';
 import { Lightbox } from './components/lightbox/lightbox';
 import { ServiceModal } from './components/service-modal/service-modal';
 import { WhatsappFab } from './components/whatsapp-fab/whatsapp-fab';
+import { Title, Meta } from '@angular/platform-browser';
 
 const GALLERY_PAGE = 8;
 
@@ -28,6 +29,9 @@ export class Landing implements OnInit {
   private api = inject(ApiService);
   private store = inject(SettingsStore);
   private sanitizer = inject(DomSanitizer);
+  private titleService = inject(Title);
+  private metaService = inject(Meta);
+
 
   settings = this.store.settings;
   services = signal<Service[]>([]);
@@ -109,6 +113,26 @@ export class Landing implements OnInit {
         this.promotions.set(data.promotions);
         this.testimonials.set(data.testimonials);
         this.status.set('ready');
+
+        // 👇 NUEVO: Actualizar Meta Tags para SEO 👇
+        const s = data.settings;
+        if (s) {
+          const pageTitle = `${s.business_name} - Peluquería y Spa`;
+          const pageDesc = s.hero_subtitle || 'Descubre nuestros servicios de belleza y cuidado personal.';
+          
+          this.titleService.setTitle(pageTitle);
+          this.metaService.updateTag({ name: 'description', content: pageDesc });
+          
+          // Open Graph (Para WhatsApp, Facebook, Instagram)
+          this.metaService.updateTag({ property: 'og:title', content: pageTitle });
+          this.metaService.updateTag({ property: 'og:description', content: pageDesc });
+          this.metaService.updateTag({ property: 'og:type', content: 'website' });
+          
+          // Si hay foto de portada, la ponemos como imagen de previsualización
+          if (s.hero_image_url) {
+            this.metaService.updateTag({ property: 'og:image', content: s.hero_image_url });
+          }
+        }
       },
       error: () => this.status.set('error')
     });

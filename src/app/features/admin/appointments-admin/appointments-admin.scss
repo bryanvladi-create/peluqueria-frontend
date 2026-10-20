@@ -83,10 +83,8 @@
   }
   .data-table td.actions {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 12px;
-    border-top: 1px solid #f0f0f0;
-    padding-top: 12px;
-    margin-top: 12px;
   }
 }

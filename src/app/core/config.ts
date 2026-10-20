@@ -1,6 +1,6 @@
 // URL base de la API del backend (peluqueria-backend).
 // Desarrollo: http://localhost:4000/api  ·  Producción: cámbiala por tu dominio, p. ej. https://api.tu-dominio.com/api
-export const API_URL = 'http://localhost:4000/api';
+export const API_URL = 'https://peluqueria-backend-mmst.onrender.com/api';
 
 // MODO DEMO: true = el sitio y el panel funcionan con datos de ejemplo guardados en memoria del navegador
 // (no necesita backend, base de datos ni Cloudinary). Se reinicia al recargar la página.

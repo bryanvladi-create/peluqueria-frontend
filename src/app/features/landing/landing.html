@@ -33,22 +33,23 @@
     <button type="button" class="menu-btn" [attr.aria-expanded]="menuOpen()" aria-label="Abrir menú"
       (click)="menuOpen.set(!menuOpen())"><app-icon [name]="menuOpen() ? 'x' : 'menu'" /></button>
   </div>
+  @if (appointmentModalOpen()) {
+  <app-appointment-modal [services]="services()" (closed)="appointmentModalOpen.set(false)" />
+  }
 </header>
 
 <main>
   <!-- Portada -->
   <section id="inicio" class="hero">
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">{{ heroEyebrow() }}</p>
-        <h1>{{ heroTitle().first }}@if (heroTitle().second) { <em> {{ heroTitle().second }}</em> }</h1>
-        <p class="lead">{{ heroSubtitle() }}</p>
-        @if (services().length) {
-        <a class="btn-pink" routerLink="/" fragment="servicios">Nuestros servicios <app-icon name="arrow-right" /></a>
-        } @else if (whatsappHref(); as href) {
-        <a class="btn-pink" [href]="href" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp</a>
-        }
-      </div>
+    <div class="hero-actions" style="display: flex; gap: 12px; flex-wrap: wrap;">
+      @if (services().length) {
+      <a class="btn-pink" routerLink="/" fragment="servicios">Nuestros servicios <app-icon name="arrow-right" /></a>
+      }
+      <button type="button" class="btn-pink"
+        style="background: transparent; border: 1px solid var(--accent-pink); color: var(--accent-pink);"
+        (click)="appointmentModalOpen.set(true)">
+        Agendar Cita
+      </button>
     </div>
     <div class="hero-media" [class.no-image]="!s.hero_image_url" aria-hidden="true">
       @if (s.hero_image_url) {

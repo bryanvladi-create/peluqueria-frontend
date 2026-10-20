@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL } from './config';
 import {
+  Appointment,
   GalleryImage, LoginResponse, Promotion, Service, ServicePayload, SiteSettings, Stats, Testimonial
 } from './models';
 
@@ -73,5 +74,26 @@ export class ApiService {
     const form = new FormData();
     form.append('image', file);
     return this.http.post<{ message: string; settings: SiteSettings }>(`${API_URL}/settings/hero-image`, form);
+  }
+
+  // ---------- Citas (Público) ----------
+  createAppointment(body: {
+    client_name: string; client_phone: string; client_email?: string;
+    service_id?: string; appointment_date: string; appointment_time: string; notes?: string;
+  }): Observable<{ message: string; appointment: Appointment }> {
+    return this.http.post<{ message: string; appointment: Appointment }>(`${API_URL}/appointments`, body);
+  }
+
+  // ---------- Citas (Admin) ----------
+  getAdminAppointments(): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${API_URL}/appointments`);
+  }
+
+  updateAppointmentStatus(id: string, status: Appointment['status']): Observable<{ message: string; appointment: Appointment }> {
+    return this.http.put<{ message: string; appointment: Appointment }>(`${API_URL}/appointments/${id}/status`, { status });
+  }
+
+  deleteAppointment(id: string): Observable<unknown> {
+    return this.http.delete(`${API_URL}/appointments/${id}`);
   }
 }

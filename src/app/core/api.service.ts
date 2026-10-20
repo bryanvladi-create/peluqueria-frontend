@@ -77,7 +77,7 @@ export class ApiService {
 
   // ---------- Citas ----------
   createAppointment(body: {
-    client_name: string; client_phone: string; client_email?: string; 
+    client_name: string; client_phone: string; client_email?: string;
     service_id?: string; appointment_date: string; appointment_time: string; notes?: string;
   }): Observable<{ message: string; appointment: Appointment }> {
     return this.http.post<{ message: string; appointment: Appointment }>(`${API_URL}/appointments`, body);
@@ -87,8 +87,8 @@ export class ApiService {
     return this.http.get<Appointment[]>(`${API_URL}/appointments`);
   }
 
-  updateAppointmentStatus(id: string, status: Appointment['status']): Observable<{ message: string; appointment: Appointment }> {
-    return this.http.put<{ message: string; appointment: Appointment }>(`${API_URL}/appointments/${id}/status`, { status });
+  updateAppointmentStatus(id: string, status: Appointment['status'], reason?: string): Observable<{ message: string; appointment: Appointment }> {
+    return this.http.put<{ message: string; appointment: Appointment }>(`${API_URL}/appointments/${id}/status`, { status, reason });
   }
 
   deleteAppointment(id: string): Observable<unknown> {

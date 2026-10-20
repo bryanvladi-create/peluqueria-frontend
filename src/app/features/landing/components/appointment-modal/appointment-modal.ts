@@ -33,7 +33,7 @@ export class AppointmentModal implements OnInit, OnDestroy {
   form = this.fb.group({
     client_name: ['', [Validators.required, Validators.maxLength(120)]],
     client_phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s-]{8,20}$/)]],
-    client_email: ['', [Validators.email]],
+    client_email: ['', [Validators.required, Validators.email]],
     service_id: [''],
     appointment_date: ['', [Validators.required]],
     appointment_time: ['', [Validators.required]],

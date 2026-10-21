@@ -10,7 +10,93 @@
   margin-inline: auto;
 }
 
-/* ---------- Estados ---------- */
+/* ---------- SKELETON LOADERS ---------- */
+.skeleton-page {
+  background: #131316;
+  min-height: 100vh;
+}
+.skeleton-container {
+  width: min(1180px, 100% - 48px);
+  margin-inline: auto;
+  padding-top: 80px;
+}
+.skeleton {
+  background: linear-gradient(90deg, #1f1f23 25%, #2a2a30 50%, #1f1f23 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+.skeleton-hero {
+  height: 60vh;
+  min-height: 400px;
+  border-bottom: 1px solid #222;
+}
+.skeleton-text {
+  height: 20px;
+  margin-bottom: 16px;
+}
+.skeleton-text.title {
+  height: 48px;
+  width: 60%;
+  margin-bottom: 24px;
+}
+.skeleton-text.text {
+  height: 16px;
+  width: 40%;
+  margin-bottom: 32px;
+}
+.skeleton-button {
+  height: 44px;
+  width: 180px;
+  border-radius: 99px;
+}
+.skeleton-section {
+  padding: 60px 0;
+  background: var(--paper);
+}
+.skeleton-text.heading {
+  height: 32px;
+  width: 200px;
+  margin-bottom: 32px;
+  background: #e2dcd7;
+}
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 18px;
+}
+.skeleton-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+}
+.skeleton-image {
+  aspect-ratio: 4/3;
+  width: 100%;
+  margin-bottom: 16px;
+  background: #e2dcd7;
+}
+.skeleton-text.title-sm {
+  height: 18px;
+  width: 70%;
+  background: #e2dcd7;
+}
+.skeleton-text.text-sm {
+  height: 14px;
+  width: 50%;
+  background: #e2dcd7;
+  margin-bottom: 0;
+}
+
+/* ---------- ESTADOS ---------- */
 .state {
   min-height: 100vh;
   display: grid;
@@ -24,19 +110,6 @@
 .state h1 {
   color: var(--text-light);
   font-size: 1.8rem;
-}
-.spinner {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 3px solid #333;
-  border-top-color: var(--accent-pink);
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* ---------- Barra superior ---------- */
@@ -182,7 +255,6 @@ button:focus-visible {
   flex-wrap: wrap;
   align-items: center;
 }
-
 .btn-pink,
 .btn-dark {
   display: inline-flex;
@@ -735,16 +807,17 @@ button:focus-visible {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
   .service-card,
   .service-thumb img,
   .gallery-item img,
   .service-arrow,
-  .spinner,
   .promo,
   .promo-img,
   .review {
     transition: none;
-    animation: none;
   }
   .service-card:hover,
   .service-card:hover .service-thumb img,

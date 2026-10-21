@@ -1,8 +1,27 @@
 @switch (status()) {
   @case ('loading') {
-    <div class="state" role="status" aria-live="polite">
-      <span class="spinner" aria-hidden="true"></span>
-      <p>Cargando…</p>
+    <div class="skeleton-page" role="status" aria-live="polite">
+      <div class="skeleton-hero">
+        <div class="skeleton-container">
+          <div class="skeleton skeleton-text title"></div>
+          <div class="skeleton skeleton-text text"></div>
+          <div class="skeleton skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-section">
+        <div class="skeleton-container">
+          <div class="skeleton skeleton-text heading"></div>
+          <div class="skeleton-grid">
+            @for (i of [1,2,3,4]; track i) {
+              <div class="skeleton-card">
+                <div class="skeleton skeleton-image"></div>
+                <div class="skeleton skeleton-text title-sm"></div>
+                <div class="skeleton skeleton-text text-sm"></div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
     </div>
   }
   @case ('error') {
@@ -16,39 +35,22 @@
     @if (settings(); as s) {
       <header class="topbar">
         <div class="container topbar-inner">
-          <a class="brand" routerLink="/" fragment="inicio" (click)="menuOpen.set(false)">{{
-            s.business_name
-          }}</a>
+          <a class="brand" routerLink="/" fragment="inicio" (click)="menuOpen.set(false)">{{ s.business_name }}</a>
 
           <nav class="nav" [class.open]="menuOpen()" aria-label="Principal">
             @for (link of navLinks(); track link.fragment) {
-              <a routerLink="/" [fragment]="link.fragment" (click)="menuOpen.set(false)">{{
-                link.label
-              }}</a>
+              <a routerLink="/" [fragment]="link.fragment" (click)="menuOpen.set(false)">{{ link.label }}</a>
             }
           </nav>
 
           <div class="topbar-social">
             @for (social of socials(); track social.name) {
-              <a
-                [href]="social.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                [attr.aria-label]="social.name"
-                ><app-icon [name]="social.icon"
-              /></a>
+              <a [href]="social.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="social.name"><app-icon [name]="social.icon" /></a>
             }
           </div>
 
-          <button
-            type="button"
-            class="menu-btn"
-            [attr.aria-expanded]="menuOpen()"
-            aria-label="Abrir menú"
-            (click)="menuOpen.set(!menuOpen())"
-          >
-            <app-icon [name]="menuOpen() ? 'x' : 'menu'" />
-          </button>
+          <button type="button" class="menu-btn" [attr.aria-expanded]="menuOpen()" aria-label="Abrir menú"
+                  (click)="menuOpen.set(!menuOpen())"><app-icon [name]="menuOpen() ? 'x' : 'menu'" /></button>
         </div>
       </header>
 
@@ -58,44 +60,23 @@
           <div class="container hero-grid">
             <div class="hero-copy">
               <p class="eyebrow">{{ heroEyebrow() }}</p>
-              <h1>
-                {{ heroTitle().first }}
-                @if (heroTitle().second) {
-                  <em> {{ heroTitle().second }}</em>
-                }
-              </h1>
+              <h1>{{ heroTitle().first }}@if (heroTitle().second) { <em> {{ heroTitle().second }}</em> }</h1>
               <p class="lead">{{ heroSubtitle() }}</p>
-
-              <!-- BOTONES DEL HERO -->
+              
               <div class="hero-buttons">
                 @if (services().length) {
-                  <a class="btn-pink" routerLink="/" fragment="servicios"
-                    >Nuestros servicios <app-icon name="arrow-right"
-                  /></a>
+                  <a class="btn-pink" routerLink="/" fragment="servicios">Nuestros servicios <app-icon name="arrow-right" /></a>
                 } @else if (whatsappHref(); as href) {
-                  <a class="btn-pink" [href]="href" target="_blank" rel="noopener noreferrer"
-                    >Escríbenos por WhatsApp</a
-                  >
+                  <a class="btn-pink" [href]="href" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp</a>
                 }
-                <button
-                  type="button"
-                  class="btn-pink btn-outline"
-                  (click)="appointmentModalOpen.set(true)"
-                >
+                <button type="button" class="btn-pink btn-outline" (click)="appointmentModalOpen.set(true)">
                   Agendar Cita
                 </button>
               </div>
             </div>
           </div>
           <div class="hero-media" [class.no-image]="!s.hero_image_url" aria-hidden="true">
-            @if (s.hero_image_url) {
-              <img
-                [src]="s.hero_image_url | imageUrl"
-                [style.object-position]="s.hero_image_position || 'center'"
-                alt=""
-                fetchpriority="high"
-              />
-            }
+            @if (s.hero_image_url) { <img [src]="s.hero_image_url | imageUrl" [style.object-position]="s.hero_image_position || 'center'" alt="" fetchpriority="high" /> }
           </div>
         </section>
 
@@ -109,22 +90,14 @@
               </div>
               <div class="service-grid">
                 @for (service of services(); track service.id) {
-                  <button
-                    type="button"
-                    class="service-card"
-                    (click)="openService(service)"
-                    [attr.aria-label]="'Ver detalles de ' + service.name"
-                  >
+                  <button type="button" class="service-card" (click)="openService(service)"
+                          [attr.aria-label]="'Ver detalles de ' + service.name">
                     <span class="service-thumb">
-                      @if (service.cover_image_url) {
-                        <img [src]="service.cover_image_url | imageUrl" alt="" loading="lazy" />
-                      }
+                      @if (service.cover_image_url) { <img [src]="service.cover_image_url | imageUrl" alt="" loading="lazy" /> }
                     </span>
                     <span class="service-body">
                       <span class="service-title">{{ service.name }}</span>
-                      @if (service.short_description) {
-                        <span class="service-text">{{ service.short_description }}</span>
-                      }
+                      @if (service.short_description) { <span class="service-text">{{ service.short_description }}</span> }
                     </span>
                     <app-icon class="service-arrow" name="arrow-right" />
                   </button>
@@ -144,25 +117,14 @@
                   <p>Cada estilo cuenta una historia</p>
                 </div>
                 @if (hasMoreGallery()) {
-                  <button type="button" class="link-btn" (click)="showAllGallery()">
-                    Ver más fotos
-                  </button>
+                  <button type="button" class="link-btn" (click)="showAllGallery()">Ver más fotos</button>
                 }
               </div>
               <div class="gallery-grid">
                 @for (image of galleryShown(); track image.id; let i = $index) {
-                  <button
-                    type="button"
-                    class="gallery-item"
-                    [appReveal]="i"
-                    (click)="openLightbox(i)"
-                    [attr.aria-label]="'Ampliar foto ' + (i + 1) + ' de ' + gallery().length"
-                  >
-                    <img
-                      [src]="image.image_url | imageUrl"
-                      [alt]="image.alt_text || 'Trabajo del salón'"
-                      loading="lazy"
-                    />
+                  <button type="button" class="gallery-item" [appReveal]="i" (click)="openLightbox(i)"
+                          [attr.aria-label]="'Ampliar foto ' + (i + 1) + ' de ' + gallery().length">
+                    <img [src]="image.image_url | imageUrl" [alt]="image.alt_text || 'Trabajo del salón'" loading="lazy" />
                     <span class="zoom"><app-icon name="zoom-in" /></span>
                   </button>
                 }
@@ -179,35 +141,20 @@
                 <h2>Promociones y Ofertas</h2>
                 <p>Descubre nuestros descuentos exclusivos por tiempo limitado</p>
               </div>
-
+              
               <div class="promo-list">
                 @for (promo of promotions(); track promo.id) {
                   <article class="promo" [class.has-image]="!!promo.image_url">
-                    @if (promo.image_url) {
-                      <img
-                        class="promo-img"
-                        [src]="promo.image_url | imageUrl"
-                        alt=""
-                        loading="lazy"
-                      />
-                    }
+                    @if (promo.image_url) { <img class="promo-img" [src]="promo.image_url | imageUrl" alt="" loading="lazy" /> }
                     <div class="promo-body">
                       <h2>{{ promo.title }}</h2>
-                      @if (promo.subtitle) {
-                        <p class="promo-sub">{{ promo.subtitle }}</p>
-                      }
-                      @if (promo.description) {
-                        <p class="promo-text">{{ promo.description }}</p>
-                      }
+                      @if (promo.subtitle) { <p class="promo-sub">{{ promo.subtitle }}</p> }
+                      @if (promo.description) { <p class="promo-text">{{ promo.description }}</p> }
                       @if (promoHref(promo); as href) {
-                        <a class="btn-pink" [href]="href" target="_blank" rel="noopener noreferrer"
-                          >Reservar ahora</a
-                        >
+                        <a class="btn-pink" [href]="href" target="_blank" rel="noopener noreferrer">Reservar ahora</a>
                       }
                     </div>
-                    @if (promoUntil(promo); as until) {
-                      <span class="promo-badge">{{ until }}</span>
-                    }
+                    @if (promoUntil(promo); as until) { <span class="promo-badge">{{ until }}</span> }
                   </article>
                 }
               </div>
@@ -218,10 +165,7 @@
         <!-- Testimonios + Ubicación -->
         @if (showTestimonials() || showLocation()) {
           <section id="ubicacion" class="section light closing">
-            <div
-              class="container closing-grid"
-              [class.split]="showTestimonials() && showLocation()"
-            >
+            <div class="container closing-grid" [class.split]="showTestimonials() && showLocation()">
               @if (showTestimonials()) {
                 <div class="reviews">
                   <h2>Lo que dicen nuestros clientes</h2>
@@ -230,21 +174,12 @@
                   @if (s.google_rating) {
                     <div class="rating">
                       <strong>{{ s.google_rating }}</strong>
-                      <span
-                        class="stars"
-                        role="img"
-                        [attr.aria-label]="s.google_rating + ' de 5 estrellas'"
-                      >
-                        @for (star of starList; track star) {
-                          <app-icon name="star" [class.off]="!isStarOn(star, s.google_rating)" />
-                        }
+                      <span class="stars" role="img" [attr.aria-label]="s.google_rating + ' de 5 estrellas'">
+                        @for (star of starList; track star) { <app-icon name="star" [class.off]="!isStarOn(star, s.google_rating)" /> }
                       </span>
                       <span class="rating-note">
-                        @if (s.google_reviews_count) {
-                          Basado en {{ s.google_reviews_count }} reseñas en Google
-                        } @else {
-                          Calificación en Google
-                        }
+                        @if (s.google_reviews_count) { Basado en {{ s.google_reviews_count }} reseñas en Google }
+                        @else { Calificación en Google }
                       </span>
                     </div>
                   }
@@ -253,19 +188,11 @@
                     @for (review of shownTestimonials(); track review.id) {
                       <figure class="review">
                         <figcaption>
-                          <span class="avatar" aria-hidden="true">{{
-                            initial(review.client_name)
-                          }}</span>
+                          <span class="avatar" aria-hidden="true">{{ initial(review.client_name) }}</span>
                           <span class="review-name">{{ review.client_name }}</span>
                         </figcaption>
-                        <span
-                          class="stars small"
-                          role="img"
-                          [attr.aria-label]="review.rating + ' de 5 estrellas'"
-                        >
-                          @for (star of starList; track star) {
-                            <app-icon name="star" [class.off]="!isStarOn(star, review.rating)" />
-                          }
+                        <span class="stars small" role="img" [attr.aria-label]="review.rating + ' de 5 estrellas'">
+                          @for (star of starList; track star) { <app-icon name="star" [class.off]="!isStarOn(star, review.rating)" /> }
                         </span>
                         <blockquote>{{ review.review_text }}</blockquote>
                       </figure>
@@ -281,37 +208,20 @@
                     <p class="reviews-sub">Tu belleza también tiene dirección.</p>
                     <ul class="visit-list">
                       @if (s.address_text) {
-                        <li>
-                          <app-icon name="pin" />
-                          <div>
-                            <strong>Dirección</strong><span>{{ s.address_text }}</span>
-                          </div>
-                        </li>
+                        <li><app-icon name="pin" /><div><strong>Dirección</strong><span>{{ s.address_text }}</span></div></li>
                       }
                       @if (s.opening_hours) {
-                        <li>
-                          <app-icon name="clock" />
-                          <div>
-                            <strong>Horario</strong><span>{{ s.opening_hours }}</span>
-                          </div>
-                        </li>
+                        <li><app-icon name="clock" /><div><strong>Horario</strong><span>{{ s.opening_hours }}</span></div></li>
                       }
                     </ul>
                     @if (directionsUrl(); as href) {
-                      <a class="btn-dark" [href]="href" target="_blank" rel="noopener noreferrer"
-                        >Cómo llegar en Google Maps</a
-                      >
+                      <a class="btn-dark" [href]="href" target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps</a>
                     }
                   </div>
                   @if (mapSrc(); as src) {
                     <div class="map">
-                      <iframe
-                        [src]="src"
-                        title="Mapa con la ubicación del local"
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"
-                        allowfullscreen
-                      ></iframe>
+                      <iframe [src]="src" title="Mapa con la ubicación del local" loading="lazy"
+                              referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
                     </div>
                   }
                 </div>
@@ -326,19 +236,11 @@
           <span class="brand">{{ s.business_name }}</span>
           <div class="footer-social">
             @for (social of socials(); track social.name) {
-              <a
-                [href]="social.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                [attr.aria-label]="social.name"
-                ><app-icon [name]="social.icon"
-              /></a>
+              <a [href]="social.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="social.name"><app-icon [name]="social.icon" /></a>
             }
           </div>
           @if (whatsappHref(); as href) {
-            <a class="footer-wa" [href]="href" target="_blank" rel="noopener noreferrer"
-              ><app-icon name="whatsapp" /> Chatea con nosotros</a
-            >
+            <a class="footer-wa" [href]="href" target="_blank" rel="noopener noreferrer"><app-icon name="whatsapp" /> Chatea con nosotros</a>
           }
         </div>
         <p class="copy">© {{ year }} {{ s.business_name }}. Todos los derechos reservados.</p>
@@ -347,21 +249,12 @@
       <app-whatsapp-fab [number]="s.whatsapp_number" />
 
       @if (selectedService(); as service) {
-        <app-service-modal
-          [service]="service"
-          [whatsapp]="s.whatsapp_number"
-          (closed)="selectedService.set(null)"
-        />
+        <app-service-modal [service]="service" [whatsapp]="s.whatsapp_number" (closed)="selectedService.set(null)" />
       }
       @if (lightboxIndex() !== null) {
-        <app-lightbox
-          [images]="gallery()"
-          [startIndex]="lightboxIndex() ?? 0"
-          (closed)="lightboxIndex.set(null)"
-        />
+        <app-lightbox [images]="gallery()" [startIndex]="lightboxIndex() ?? 0" (closed)="lightboxIndex.set(null)" />
       }
-
-      <!-- MODAL DE CITAS -->
+      
       @if (appointmentModalOpen()) {
         <app-appointment-modal [services]="services()" (closed)="appointmentModalOpen.set(false)" />
       }

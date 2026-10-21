@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build -- --configuration production"
+  publish = "dist/peluqueria-frontend/browser"
+
+[[edge_functions]]
+  path = "/"
+  function = "seo-bot"
